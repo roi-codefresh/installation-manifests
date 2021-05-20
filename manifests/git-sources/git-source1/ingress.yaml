@@ -1,0 +1,21 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: eventsource
+  annotations:
+    nginx.ingress.kubernetes.io/ssl-redirect: "false"
+    nginx.ingress.kubernetes.io/force-ssl-redirect: "false"
+    nginx.ingress.kubernetes.io/rewrite-target: /
+spec:
+  tls:
+  - hosts:
+    - codefresh-events.io
+    secretName: tls-secret
+  rules:
+  - host: codefresh-events.io
+    http:
+      paths:
+        - path: /push
+          backend:
+            serviceName: git-source-1-eventsource-svc
+            servicePort: 12000

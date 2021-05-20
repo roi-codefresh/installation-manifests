@@ -1,0 +1,29 @@
+
+apiVersion: argoproj.io/v1alpha1
+kind: Sensor
+metadata:
+  name: github
+spec:
+
+  dependencies:
+    - name: eventsource
+      eventSourceName: github
+      eventName: example
+
+  triggers:
+    - template:
+        name: http-trigger
+        http:
+          url: <agent-svc>
+          payload:
+            - src:
+                dependencyName: eventsource
+                dataKey: body
+              dest: payload
+          method: POST
+          headers:
+            Content-Type: application/json
+            X-Access-Token: <codefresh-api-key>
+      retryStrategy:
+        steps: 3
+        duration: 3s

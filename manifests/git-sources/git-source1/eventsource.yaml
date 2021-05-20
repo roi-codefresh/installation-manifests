@@ -1,0 +1,47 @@
+apiVersion: argoproj.io/v1alpha1
+kind: EventSource
+metadata:
+  name: git-source-1
+spec:
+  service:
+    ports:
+      - port: 12000
+        targetPort: 12000
+  github:
+    example:
+      repositories:
+        - owner: roi-codefresh
+          names:
+            - installation-manifests
+      webhook:
+        endpoint: /push
+        port: "12000"
+        method: POST
+        url: https://a210bd05d34a54c8dbca51845e3d3951-ca0abb4e2646346c.elb.us-east-1.amazonaws.com
+
+      events:
+        - "*"
+
+      apiToken:
+        name: autopilot-secret
+        key: git_token
+
+      insecure: true
+      active: true
+      contentType: json
+  
+  resource:
+    example:
+      # resource group
+      group: '*'
+      # resource version
+      version: '*'
+      # resource kind
+      resource: '*'
+
+      filter:
+        afterStart: true
+        labels:
+          - key: "git-source/name"
+            operation: "=="
+            value: "git-source-1"

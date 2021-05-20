@@ -1,0 +1,9 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:                                                                                                                                        
+  name: contexts-cm
+data:
+  context-name-1: |
+    type: git
+    authSecret: secret-name-1
+    url: https://github.com/roi-codefresh/codefresh-installation.git
