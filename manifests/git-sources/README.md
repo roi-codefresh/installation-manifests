@@ -1,0 +1,2 @@
+export KUBE_CONTEXT
+export NAMESPACE
