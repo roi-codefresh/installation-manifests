@@ -6,15 +6,38 @@ metadata:
 spec:
 
   dependencies:
-    - name: eventsource
-      eventSourceName: github
-      eventName: example
+    - name: desired
+      eventSourceName: git-source-1
+      eventName: desired
+
+    - name: actual
+      eventSourceName: git-source-1
+      eventName: actual
 
   triggers:
     - template:
+        conditions: desired # only run when desired event happens
         name: http-trigger
         http:
-          url: <agent-svc>
+          url: <agent-svc> # should send webhook to agent for analysis
+          payload:
+            - src:
+                dependencyName: desired
+                dataKey: body
+              dest: payload
+          method: POST
+          headers:
+            Content-Type: application/json
+            X-Access-Token: <codefresh-api-key>
+      retryStrategy:
+        steps: 3
+        duration: 3s
+    
+    - template:
+        conditions: actual # only run when actual event happens
+        name: http-trigger
+        http:
+          url: <codefresh-url> # send event directly to codefresh?
           payload:
             - src:
                 dependencyName: eventsource

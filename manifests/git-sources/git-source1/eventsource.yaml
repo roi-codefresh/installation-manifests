@@ -7,8 +7,10 @@ spec:
     ports:
       - port: 12000
         targetPort: 12000
+  
+  # desired state
   github:
-    example:
+    desired:
       repositories:
         - owner: roi-codefresh
           names:
@@ -30,8 +32,9 @@ spec:
       active: true
       contentType: json
   
+  # actual state
   resource:
-    example:
+    actual:
       # resource group
       group: '*'
       # resource version

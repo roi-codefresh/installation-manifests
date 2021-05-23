@@ -4,6 +4,13 @@ metadata:
   name: contexts-cm
 data:
   context-name-1: |
-    type: git
-    authSecret: secret-name-1
-    url: https://github.com/roi-codefresh/codefresh-installation.git
+    git:
+      provider: github
+      apiUrl: https://api.github.com/api/v4
+      authSecret: secret-name-1
+
+  context-name-2: |
+    dockerRegistry:
+      provider: dockerhub
+      apiUrl: https://api.github.com/api/v4
+      authSecret: secret-name-2
